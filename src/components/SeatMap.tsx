@@ -64,7 +64,7 @@ export default function SeatMap({
           table: 'seats',
           filter: `flight_id=eq.${flightId}`,
         },
-        (payload) => {
+        (payload: any) => {
           if (!active) return;
           const updatedSeat = payload.new as Seat;
           setSeats((prevSeats) =>

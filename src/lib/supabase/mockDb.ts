@@ -84,7 +84,7 @@ const getMockSeats = () => {
 
   if (seats.length === 0 || !hasSeatsForFlights) {
     seats = [];
-    flights.forEach((flight) => {
+    flights.forEach((flight: any) => {
       const classes = ['first', 'business', 'business', 'economy', 'economy'];
       const fees = [150, 75, 75, 0, 0];
 
@@ -92,7 +92,7 @@ const getMockSeats = () => {
         const cls = classes[r - 1];
         const fee = fees[r - 1];
 
-        ['A', 'B', 'C', 'D', 'E', 'F'].forEach((col) => {
+        ['A', 'B', 'C', 'D', 'E', 'F'].forEach((col: string) => {
           const seatNum = `${r}${col}`;
           const isAvailable = !(r === 2 && col === 'B') && !(r === 4 && col === 'D') && !(r === 1 && col === 'A');
 
@@ -244,7 +244,7 @@ export class MockSupabase {
       } = params;
 
       const seats = getMockSeats();
-      const seatIndex = seats.findIndex((s) => s.id === p_seat_id);
+      const seatIndex = seats.findIndex((s: any) => s.id === p_seat_id);
       if (seatIndex === -1 || !seats[seatIndex].is_available) {
         return { data: { success: false, error: 'Seat is already occupied.' }, error: null };
       }
@@ -256,7 +256,7 @@ export class MockSupabase {
       // Save Booking
       const bookings = getMockBookings();
       const flights = getMockFlights();
-      const flight = flights.find((f) => f.id === p_flight_id);
+      const flight = flights.find((f: any) => f.id === p_flight_id);
 
       const newBooking = {
         id: 'booking-' + Math.random().toString(36).substr(2, 9),
@@ -287,7 +287,7 @@ export class MockSupabase {
     if (name === 'cancel_booking_atomic') {
       const { p_booking_id } = params;
       const bookings = getMockBookings();
-      const bookingIndex = bookings.findIndex((b) => b.id === p_booking_id);
+      const bookingIndex = bookings.findIndex((b: any) => b.id === p_booking_id);
       if (bookingIndex === -1) {
         return { data: { success: false, error: 'Booking not found.' }, error: null };
       }
@@ -305,7 +305,7 @@ export class MockSupabase {
 
       // Release seat
       const seats = getMockSeats();
-      const seatIndex = seats.findIndex((s) => s.id === booking.seat_id);
+      const seatIndex = seats.findIndex((s: any) => s.id === booking.seat_id);
       if (seatIndex !== -1) {
         seats[seatIndex].is_available = true;
         saveMockSeats(seats);
@@ -317,7 +317,7 @@ export class MockSupabase {
     if (name === 'reschedule_booking_atomic') {
       const { p_booking_id, p_new_flight_id, p_new_seat_id, p_fee_charged } = params;
       const bookings = getMockBookings();
-      const bookingIndex = bookings.findIndex((b) => b.id === p_booking_id);
+      const bookingIndex = bookings.findIndex((b: any) => b.id === p_booking_id);
       if (bookingIndex === -1) {
         return { data: { success: false, error: 'Booking not found.' }, error: null };
       }
@@ -326,11 +326,11 @@ export class MockSupabase {
 
       // Release old seat
       const seats = getMockSeats();
-      const oldSeatIndex = seats.findIndex((s) => s.id === booking.seat_id);
+      const oldSeatIndex = seats.findIndex((s: any) => s.id === booking.seat_id);
       if (oldSeatIndex !== -1) seats[oldSeatIndex].is_available = true;
 
       // Occupy new seat
-      const newSeatIndex = seats.findIndex((s) => s.id === p_new_seat_id);
+      const newSeatIndex = seats.findIndex((s: any) => s.id === p_new_seat_id);
       if (newSeatIndex === -1 || !seats[newSeatIndex].is_available) {
         return { data: { success: false, error: 'Selected seat is already taken.' }, error: null };
       }
@@ -340,7 +340,7 @@ export class MockSupabase {
 
       // Update booking flight details
       const flights = getMockFlights();
-      const newFlight = flights.find((f) => f.id === p_new_flight_id);
+      const newFlight = flights.find((f: any) => f.id === p_new_flight_id);
 
       booking.flight_id = p_new_flight_id;
       booking.seat_id = p_new_seat_id;

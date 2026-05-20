@@ -18,7 +18,8 @@ export default function Navbar() {
 
   // Sync auth state on mount and changes
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+    supabase.auth.getSession().then((res: any) => {
+      const currentSession = res?.data?.session;
       if (currentSession?.user) {
         setSession({
           id: currentSession.user.id,
@@ -31,7 +32,7 @@ export default function Navbar() {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, currentSession) => {
+    } = supabase.auth.onAuthStateChange((_event: any, currentSession: any) => {
       if (currentSession?.user) {
         setSession({
           id: currentSession.user.id,
